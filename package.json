@@ -1,0 +1,15 @@
+{
+  "name": "man-man",
+  "version": "1.0.0",
+  "description": "An application that assists with management of departements, roles, and employees in a business.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Grirvy",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "mysql2": "^3.6.5"
+  }
+}
