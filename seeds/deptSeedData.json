@@ -1,0 +1,14 @@
+[
+    {
+    "id": "123",
+    "title": "Department 1",
+    "num": 1,
+    "created_at": "2024-01-04T00:00:00Z"
+    },
+    {
+    "id": "223",
+    "title": "Department 2",
+    "num": 2,
+    "created_at": "2024-01-04T00:00:00Z"
+    }
+]
