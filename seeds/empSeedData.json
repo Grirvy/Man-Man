@@ -1,0 +1,14 @@
+[
+    {
+    "id": "101",
+    "name":"Giu",
+    "role":"Role 1",
+    "address":"106 Infinie Street"
+    },
+    {
+    "id": "102",
+    "name":"Boei",
+    "role":"Role 2",
+    "address":"105 Infinite Infinie Street"
+    }
+]

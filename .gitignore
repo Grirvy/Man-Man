@@ -1,1 +1,9 @@
+## Ignore node modules
 node_modules
+
+## Ignore dotenv
+.env
+
+## Ignore dotenv
+DS_Store
+

@@ -1,133 +1,160 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql2');
+const connection = require('./config/CONN');
+const Department = require('./models/Dept');
+const Role = require('./models/Role');
+const Employee = require('./models/Emp');
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/Man-Man');
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'your_username',
-  password: 'your_password',
-  database: 'your_database',
-});
-
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('Connected to the MySQL database');
-  startApplication();
-});
 
 async function startApplication() {
   try {
     const answer = await inquirer.prompt({
-      type: 'list',
-      name: 'action',
-      message: 'What would you like to do?',
-      choices: [
-        'View all departments',
-        'View all roles',
-        'View all employees',
-        'Add a department',
-        'Add a role',
-        'Add an employee',
-        'Update an employee role',
-        'Exit',
-      ],
+        type: 'list',
+        name: 'action',
+        message: 'What would you like to do?',
+        choices: [
+            'View all departments',
+            'View all roles',
+            'View all employees',
+            'Add a department',
+            'Add a role',
+            'Add an employee',
+            'Update an employee role',
+            'Exit',
+        ],
     });
 
     if (answer.action === 'View all departments') {
-      await viewAllDepartments();
+        await viewAllDepartments();
 
     } else if (answer.action === 'View all roles') {
-      await viewAllRoles();
+        await viewAllRoles();
 
     } else if (answer.action === 'View all employees') {
-      await viewAllEmployees();
+        await viewAllEmployees();
 
     } else if (answer.action === 'Add a department') {
-      await addDepartment();
+        await addDepartment();
 
     } else if (answer.action === 'Add a role') {
-      await addRole();
+        await addRole();
 
     } else if (answer.action === 'Add an employee') {
-      await addEmployee();
+        await addEmployee();
 
     } else if (answer.action === 'Update an employee role') {
-      await updateEmployeeRole();
+        await updateEmployeeRole();
 
     } else if (answer.action === 'Exit') {
-      connection.end();
+        process.exit(0);
 
     }
-
-  } catch (error) {
-    console.error('Error:', error.message);
-    startApplication();
+  } catch (e) {
+      console.error('Error:', e.message);
+      startApplication();
   }
 }
 
 async function viewAllDepartments() {
   try {
-    const query = 'SELECT * FROM department';
-    const [results] = await connection.promise().query(query);
-    console.table(results);
-    startApplication();
+      const depts = await Department.findAll();
+      console.table(depts);
+      startApplication();
   } catch (error) {
-    console.error('Error:', error.message);
-    startApplication();
+      console.error('Error:', error.message);
+      startApplication();
   }
 }
 
 async function viewAllRoles() {
   try {
-    const query = 'SELECT * FROM role';
-    const [results] = await connection.promise().query(query);
-    console.table(results);
-    startApplication();
+      const roles = await Role.findAll();
+      console.table(roles);
+      startApplication();
   } catch (error) {
-    console.error('Error:', error.message);
-    startApplication();
+      console.error('Error:', error.message);
+      startApplication();
   }
 }
 
 async function viewAllEmployees() {
   try {
-    const query = 'SELECT * FROM employee';
-    const [results] = await connection.promise().query(query);
-    console.table(results);
-    startApplication();
+      const employees = await Employee.findAll();
+      console.table(employees);
+      startApplication();
   } catch (error) {
-    console.error('Error:', error.message);
-    startApplication();
+      console.error('Error:', error.message);
+      startApplication();
   }
 }
 
 async function addDepartment() {
   try {
-    const answer = await inquirer.prompt({
-      type: 'input',
-      name: 'departmentName',
-      message: 'Enter the name of the department:',
-    });
+      const answer = await inquirer.prompt({
+          type: 'input',
+          name: 'departmentName',
+          message: 'Enter the name of the department:',
+      });
 
-    const query = 'INSERT INTO department (name) VALUES (?)';
-    await connection.promise().query(query, [answer.departmentName]);
-    console.log('Department added successfully!');
-    startApplication();
+      const newDepartment = await Department.create({
+          title: answer.departmentName,
+      });
+
+      console.log('Department added successfully!');
+      startApplication();
   } catch (error) {
-    console.error('Error:', error.message);
-    startApplication();
+      console.error('Error:', error.message);
+      startApplication();
   }
 }
 
 async function addRole() {
-  // Implement similar logic with try-catch for adding a role
+  try {
+      // Implement prompts for adding a role
+      const roleAnswers = await inquirer.prompt([
+          // Add prompts for role information (e.g., name, salary, department)
+      ]);
+
+      // Create the role using the gathered information
+      const newRole = await Role.create({
+          // Use roleAnswers to set the attributes of the new role
+      });
+
+      console.log('Role added successfully!');
+      startApplication();
+  } catch (error) {
+      console.error('Error:', error.message);
+      startApplication();
+  }
 }
 
 async function addEmployee() {
-  // Implement similar logic with try-catch for adding an employee
+  try {
+      // Implement prompts for adding an employee
+      const employeeAnswers = await inquirer.prompt([
+          // Add prompts for employee information (e.g., first name, last name, role, manager)
+      ]);
+
+      // Create the employee using the gathered information
+      const newEmployee = await Employee.create({
+          // Use employeeAnswers to set the attributes of the new employee
+      });
+
+      console.log('Employee added successfully!');
+      startApplication();
+  } catch (error) {
+      console.error('Error:', error.message);
+      startApplication();
+  }
 }
 
+
 async function updateEmployeeRole() {
-  // Implement similar logic with try-catch for updating an employee role
+  try {
+      // Implement similar logic with prompts for updating an employee role
+  } catch (error) {
+      console.error('Error:', error.message);
+      startApplication();
+  }
 }
+
+startApplication();
